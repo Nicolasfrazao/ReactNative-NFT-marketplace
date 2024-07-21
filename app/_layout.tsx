@@ -1,37 +1,43 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import HomeScreen from './(tabs)';
+import Detail from './(tabs)/Detail';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+const stack = createStackNavigator();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'white',
+  },
+};
+export default function RootLayout ()
+{
+  
+  const [ loaded ] = useFonts( {
+    InterBold: require( '../assets/fonts/Inter-Bold.ttf' ),
+    InterSemiBold: require( '../assets/fonts/Inter-SemiBold.ttf' ),
+    InterMedium: require( '../assets/fonts/Inter-Medium.ttf' ),
+    InterRegular: require( '../assets/fonts/Inter-Regular.ttf' ),
+    InterLight: require( '../assets/fonts/Inter-Light.ttf' ),
+  } );
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
+  if ( !loaded ) return null;
+  
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <NavigationContainer theme={theme} independent>
+      <stack.Navigator
+        screenOptions={ {
+          headerShown: false,
+        } }
+        initialRouteName='Home'
+      >
+        <stack.Screen name='Home' component={HomeScreen}/>
+        <stack.Screen  name='Details' component={Detail}/>
+      </stack.Navigator>
+    </NavigationContainer>
   );
 }
