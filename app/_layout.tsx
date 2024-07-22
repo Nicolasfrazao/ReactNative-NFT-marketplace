@@ -2,8 +2,8 @@ import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useFonts } from 'expo-font';
 
-import HomeScreen from './(tabs)';
-import Detail from './(tabs)/Detail';
+import HomeScreen from './(tabs)/Screens/Home';
+import Detail from './(tabs)/Screens/Details';
 
 const stack = createStackNavigator();
 
@@ -11,7 +11,7 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: 'white',
+    background: 'transparent',
   },
 };
 export default function RootLayout ()
